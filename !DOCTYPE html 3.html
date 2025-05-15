@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz - Teorias da Administração</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      padding: 20px;
+    }
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question h3 {
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2>Quiz - Teorias da Administração</h2>
+    <div id="questions"></div>
+    <button onclick="checkAnswers()">Verificar Respostas</button>
+    <div class="result" id="result"></div>
+  </div>
+  <script>
+    const questions = [
+      { q: "Taylor se preocupava com a eficiência dos operários na produção.", options: ["Verdadeiro", "Falso"], correct: "Verdadeiro" },
+      { q: "A Teoria Neoclássica valoriza os meios e não os fins.", options: ["Verdadeiro", "Falso"], correct: "Falso" },
+      { q: "A burocracia, segundo Weber, preza pela impessoalidade.", options: ["Verdadeiro", "Falso"], correct: "Verdadeiro" },
+      { q: "A Experiência de Hawthorne teve relação com:", options: ["Medição de produtividade com foco tecnológico", "Grupos informais e comportamento social", "Divisão do trabalho técnico"], correct: "Grupos informais e comportamento social" },
+      { q: "A APO foi criada por:", options: ["Fayol", "Weber", "Peter Drucker"], correct: "Peter Drucker" },
+      { q: "Quais são as funções administrativas segundo Fayol?", options: ["Planejar, Contratar, Supervisionar", "Planejar, Organizar, Comandar, Coordenar, Controlar", "Planejar, Recrutar, Delegar"], correct: "Planejar, Organizar, Comandar, Coordenar, Controlar" },
+      { q: "Qual teoria destaca o 'homo social' ao invés do 'homo economicus'?", options: ["Teoria Científica", "Teoria das Relações Humanas", "Teoria Neoclássica"], correct: "Teoria das Relações Humanas" },
+      { q: "Qual teoria afirma que 'não há uma única melhor maneira de organizar'?", options: ["Teoria da Contingência", "Teoria Clássica", "Teoria Comportamental"], correct: "Teoria da Contingência" },
+      { q: "Qual é a principal característica da Teoria Clássica?", options: ["Ênfase nas tarefas", "Ênfase nas pessoas", "Ênfase na motivação"], correct: "Ênfase nas tarefas" },
+      { q: "Quem criou a Teoria da Burocracia?", options: ["Fayol", "Taylor", "Max Weber"], correct: "Max Weber" },
+      { q: "A teoria que considera a empresa como um sistema aberto é:", options: ["Teoria Clássica", "Teoria Estruturalista", "Teoria Científica"], correct: "Teoria Estruturalista" },
+      { q: "Segundo Fayol, controlar significa:", options: ["Executar ordens", "Verificar se tudo ocorre conforme o planejado", "Motivar a equipe"], correct: "Verificar se tudo ocorre conforme o planejado" },
+      { q: "A principal crítica à Teoria das Relações Humanas é:", options: ["Foco exclusivo na estrutura", "Abordagem demagógica", "Ênfase excessiva na tecnologia"], correct: "Abordagem demagógica" },
+      { q: "A linha de montagem é associada a:", options: ["Fordismo", "Toyotismo", "Burocracia"], correct: "Fordismo" },
+      { q: "Qual a ênfase da Teoria Comportamental?", options: ["Estrutura", "Tecnologia", "Motivação e comportamento"], correct: "Motivação e comportamento" },
+      { q: "A Teoria X de McGregor considera que as pessoas são:", options: ["Autônomas e responsáveis", "Preguiçosas e evitam responsabilidade", "Motivadas por desafios"], correct: "Preguiçosas e evitam responsabilidade" },
+      { q: "O que significa 'organizar', segundo Fayol?", options: ["Comandar os colaboradores", "Definir estrutura material e social da empresa", "Controlar processos"], correct: "Definir estrutura material e social da empresa" },
+      { q: "Quem foi o autor do conceito de 'homem econômico'?", options: ["Max Weber", "Abraham Maslow", "Frederick Taylor"], correct: "Frederick Taylor" },
+      { q: "Qual teoria se concentra na relação entre líderes e subordinados?", options: ["Teoria das Relações Humanas", "Teoria Comportamental", "Teoria X e Y"], correct: "Teoria das Relações Humanas" },
+      { q: "A Teoria X acredita que os funcionários precisam ser:", options: ["Motivados por desafios", "Supervisionados de perto", "Autônomos"], correct: "Supervisionados de perto" },
+      { q: "A Teoria Y afirma que os funcionários:", options: ["São intrinsecamente motivados", "Precisam ser controlados", "Evitarão responsabilidade"], correct: "São intrinsecamente motivados" },
+      { q: "O que é a 'administração por objetivos' (APO)?", options: ["Foco em tarefas diárias", "Planejamento estratégico de longo prazo", "Definição de metas com participação de todos"], correct: "Definição de metas com participação de todos" },
+      { q: "A teoria que vê a organização como um sistema aberto, que interage com o ambiente, é:", options: ["Teoria Contingencial", "Teoria Burocrática", "Teoria Estruturalista"], correct: "Teoria Contingencial" },
+      { q: "A principal contribuição de Henri Fayol para a administração foi:", options: ["Teoria da motivação", "Princípios administrativos", "Modelo de liderança"], correct: "Princípios administrativos" },
+      { q: "O que é a abordagem humanista na administração?", options: ["Foco em processos e estrutura", "Foco no comportamento e motivação dos funcionários", "Foco em regras e disciplina"], correct: "Foco no comportamento e motivação dos funcionários" },
+      { q: "A Teoria das Relações Humanas surgiu como uma reação à:", options: ["Teoria Clássica", "Teoria Comportamental", "Teoria Neoclássica"], correct: "Teoria Clássica" },
+      { q: "A principal característica do modelo de gestão toyotista é:", options: ["Foco em produção em massa", "Melhoria contínua e redução de desperdícios", "Hierarquia rígida"], correct: "Melhoria contínua e redução de desperdícios" },
+      { q: "A administração científica é mais associada com o aumento da:", options: ["Motivação dos trabalhadores", "Eficiência no trabalho", "Gestão participativa"], correct: "Eficiência no trabalho" },
+      { q: "Max Weber defendia a:", options: ["Administração centralizada", "Administração descentralizada", "Administração impessoal e hierárquica"], correct: "Administração impessoal e hierárquica" },
+      { q: "O que é a abordagem estruturalista na administração?", options: ["Foco no comportamento humano", "Análise da estrutura organizacional e seus processos", "Gestão por metas"], correct: "Análise da estrutura organizacional e seus processos" },
+      { q: "O que define a teoria de sistemas na administração?", options: ["Foco em sistemas fechados", "A organização como um sistema interativo com o ambiente", "A ênfase nas tarefas administrativas"], correct: "A organização como um sistema interativo com o ambiente" }
+    ];
+
+    const questionsContainer = document.getElementById("questions");
+    questions.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>${index + 1}. ${item.q}</h3>` +
+        item.options.map(opt => `
+          <label><input type="radio" name="q${index + 1}" value="${opt}" /> ${opt}</label><br />
+        `).join("");
+      questionsContainer.appendChild(div);
+    });
+
+    function checkAnswers() {
+      let score = 0;
+      questions.forEach((item, index) => {
+        const selected = document.querySelector(`input[name="q${index + 1}"]:checked`);
+        if (selected && selected.value === item.correct) {
+          score++;
+        }
+      });
+      document.getElementById("result").textContent = `Você acertou ${score} de ${questions.length} questões.`;
+    }
+  </script>
+</body>
+</html>
+
